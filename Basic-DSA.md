@@ -12,8 +12,9 @@
 10. **Graphs** – Basics, DFS, BFS.
 
 ---
+# `1. Introduction to DSA – Basic concepts, importance, and Python’s role.`
+---
 
-# `1. **Introduction to DSA** – Basic concepts, importance, and Python’s role.`
 ## **What is Data?**
 Data is any collection of raw facts, numbers, symbols, or characters that represent information. For example:
 - A student’s name and roll number.
@@ -116,9 +117,9 @@ DSA is a combination of:
 - **Graphs**: Used in Google Maps for shortest path search.
 
 ---
-
-
 # `2. **Arrays & Lists** – Basic operations, searching, and sorting.`
+---
+
 An **array** or **list** is a collection of elements stored in a sequential order. Lists in Python are dynamic and can hold elements of different data types.
 
 ## **Examples of Lists:**
@@ -388,6 +389,8 @@ print(quick_sort(unsorted_list))
 ---
 
 # **3. Stacks & Queues** – Implementation and applications.
+---
+
 Stacks and Queues are fundamental data structures used for storing and managing data efficiently. These structures follow specific order mechanisms to retrieve and store data.
 
 ## **Real-World Examples:**
@@ -1213,3 +1216,1395 @@ print_circular_list(head)
 
 **Explanation:**
 - **Circular Linked List**: The last node points back to the first node, creating a circular structure.
+
+
+
+
+### **5. Recursion – Concept and Examples**
+
+---
+
+#### **1. What is Recursion?**
+
+Recursion is a technique where a function calls itself in order to break a problem down into smaller, more manageable subproblems. A recursive function typically has two main components:
+
+1. **Base Case**: The condition under which the function stops calling itself.
+2. **Recursive Case**: The part where the function calls itself to solve a smaller problem.
+
+---
+
+#### **2. Basic Recursion Example: Factorial**
+
+The **Factorial** of a number `n` is the product of all positive integers less than or equal to `n`. For example, the factorial of 5 (`5!`) is `5 * 4 * 3 * 2 * 1 = 120`.
+
+```python
+# Recursive function to calculate factorial
+def factorial(n):
+    if n == 0 or n == 1:  # Base case: factorial of 0 or 1 is 1
+        return 1
+    else:
+        return n * factorial(n - 1)  # Recursive case
+
+# Example usage
+print(factorial(5))  # Output: 120
+```
+
+**Explanation:**
+- **Base Case**: When `n` is 0 or 1, the function stops and returns 1.
+- **Recursive Case**: The function calls itself with a smaller value of `n`.
+
+---
+
+#### **3. Recursion Example: Fibonacci Sequence**
+
+The **Fibonacci Sequence** is a series of numbers where each number is the sum of the two preceding ones. The sequence starts as `0, 1, 1, 2, 3, 5, 8, 13, ...`.
+
+```python
+# Recursive function to calculate Fibonacci sequence
+def fibonacci(n):
+    if n == 0:  # Base case: Fibonacci(0) = 0
+        return 0
+    elif n == 1:  # Base case: Fibonacci(1) = 1
+        return 1
+    else:
+        return fibonacci(n - 1) + fibonacci(n - 2)  # Recursive case
+
+# Example usage
+print(fibonacci(5))  # Output: 5 (Fibonacci sequence: 0, 1, 1, 2, 3, 5)
+```
+
+**Explanation:**
+- **Base Cases**: Fibonacci(0) = 0, Fibonacci(1) = 1.
+- **Recursive Case**: Calls itself to sum the two previous numbers in the sequence.
+
+---
+
+#### **4. Recursion Example: Sum of Natural Numbers**
+
+The sum of natural numbers up to `n` can be calculated recursively. The formula is `n + (n-1) + (n-2) + ... + 1`.
+
+```python
+# Recursive function to calculate sum of natural numbers
+def sum_natural_numbers(n):
+    if n == 1:  # Base case: sum of 1 is 1
+        return 1
+    else:
+        return n + sum_natural_numbers(n - 1)  # Recursive case
+
+# Example usage
+print(sum_natural_numbers(5))  # Output: 15 (1 + 2 + 3 + 4 + 5)
+```
+
+**Explanation:**
+- **Base Case**: When `n` is 1, the sum is 1.
+- **Recursive Case**: The function calls itself with `n - 1`, adding each value until it reaches 1.
+
+---
+
+#### **5. Recursion Example: Reverse a String**
+
+You can use recursion to reverse a string by splitting the string into smaller substrings and swapping them.
+
+```python
+# Recursive function to reverse a string
+def reverse_string(s):
+    if len(s) == 0:  # Base case: empty string
+        return s
+    else:
+        return reverse_string(s[1:]) + s[0]  # Recursive case
+
+# Example usage
+print(reverse_string("hello"))  # Output: "olleh"
+```
+
+**Explanation:**
+- **Base Case**: When the string is empty, return the empty string.
+- **Recursive Case**: Calls itself with the substring `s[1:]` and appends the first character `s[0]` at the end.
+
+---
+
+#### **6. Recursion Example: Finding the Greatest Common Divisor (GCD)**
+
+The **GCD** of two numbers is the largest number that divides both of them. A recursive approach uses the Euclidean algorithm.
+
+```python
+# Recursive function to calculate GCD of two numbers
+def gcd(a, b):
+    if b == 0:  # Base case: if b is 0, return a as the GCD
+        return a
+    else:
+        return gcd(b, a % b)  # Recursive case: Euclidean algorithm
+
+# Example usage
+print(gcd(48, 18))  # Output: 6 (Greatest common divisor of 48 and 18)
+```
+
+**Explanation:**
+- **Base Case**: When `b` is 0, the GCD is `a`.
+- **Recursive Case**: The function calls itself with `b` and the remainder of `a` divided by `b`.
+
+---
+
+#### **7. Recursion Example: Binary Search**
+
+Binary search works by repeatedly dividing the search interval in half. If the value is equal to the middle element, we return the index; otherwise, we search in the left or right half recursively.
+
+```python
+# Recursive function to perform binary search
+def binary_search(arr, target, low, high):
+    if low > high:  # Base case: element not found
+        return -1
+    mid = (low + high) // 2  # Find the middle index
+    if arr[mid] == target:  # Base case: element found
+        return mid
+    elif arr[mid] > target:
+        return binary_search(arr, target, low, mid - 1)  # Search left half
+    else:
+        return binary_search(arr, target, mid + 1, high)  # Search right half
+
+# Example usage
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+print(binary_search(arr, 5, 0, len(arr) - 1))  # Output: 4 (5 is at index 4)
+```
+
+**Explanation:**
+- **Base Case**: If the search interval is invalid (`low > high`), return `-1`. If the element is found, return the index.
+- **Recursive Case**: Adjust the search range by narrowing it to the left or right half based on comparison with the middle element.
+
+---
+
+#### **8. Recursion Example: Tower of Hanoi Problem**
+
+The **Tower of Hanoi** is a classic problem where we need to move disks from one peg to another, following certain rules.
+
+```python
+# Recursive function to solve the Tower of Hanoi problem
+def tower_of_hanoi(n, source, auxiliary, target):
+    if n == 1:  # Base case: Move the single disk
+        print(f"Move disk 1 from {source} to {target}")
+    else:
+        tower_of_hanoi(n - 1, source, target, auxiliary)  # Move n-1 disks to auxiliary
+        print(f"Move disk {n} from {source} to {target}")  # Move the nth disk
+        tower_of_hanoi(n - 1, auxiliary, source, target)  # Move n-1 disks to target
+
+# Example usage
+tower_of_hanoi(3, 'A', 'B', 'C')  # Move 3 disks from A to C using B
+```
+
+**Explanation:**
+- **Base Case**: If there's only one disk, it’s directly moved from the source to the target.
+- **Recursive Case**: The problem is broken into smaller subproblems where `n-1` disks are moved to an auxiliary peg, then the nth disk is moved, and finally the `n-1` disks are moved to the target peg.
+
+---
+
+
+
+### **6. Sorting Algorithms – Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort**
+
+---
+
+#### **1. Bubble Sort**
+
+**Bubble Sort** is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. The process is repeated until the list is sorted.
+
+**Time Complexity**: O(n^2)
+
+```python
+# Bubble Sort Algorithm
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:  # Swap if the element is greater than the next
+                arr[j], arr[j+1] = arr[j+1], arr[j]  # Swap elements
+    return arr
+
+# Example usage
+arr = [64, 34, 25, 12, 22, 11, 90]
+print("Sorted array:", bubble_sort(arr))
+```
+
+**Explanation**:
+- The outer loop tracks the number of passes.
+- The inner loop compares adjacent elements and swaps them if they are out of order.
+- After each pass, the largest element is "bubbled" to its correct position.
+
+---
+
+#### **2. Selection Sort**
+
+**Selection Sort** repeatedly selects the smallest (or largest) element from the unsorted part of the list and swaps it with the first unsorted element. It has O(n^2) time complexity, like Bubble Sort.
+
+**Time Complexity**: O(n^2)
+
+```python
+# Selection Sort Algorithm
+def selection_sort(arr):
+    for i in range(len(arr)):
+        min_idx = i  # Assume the first unsorted element is the smallest
+        for j in range(i+1, len(arr)):
+            if arr[j] < arr[min_idx]:
+                min_idx = j  # Find the smallest element
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]  # Swap the smallest with the first unsorted element
+    return arr
+
+# Example usage
+arr = [64, 25, 12, 22, 11]
+print("Sorted array:", selection_sort(arr))
+```
+
+**Explanation**:
+- The outer loop iterates through each element.
+- The inner loop finds the smallest element from the unsorted part of the array.
+- The smallest element is swapped with the first unsorted element.
+
+---
+
+#### **3. Insertion Sort**
+
+**Insertion Sort** builds the final sorted array one item at a time by inserting each element into its correct position in the sorted part of the list.
+
+**Time Complexity**: O(n^2) in the worst case, but O(n) in the best case (when the array is already sorted).
+
+```python
+# Insertion Sort Algorithm
+def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]  # Element to be inserted into the sorted part
+        j = i-1
+        while j >= 0 and arr[j] > key:  # Shift elements of the sorted part that are greater than the key
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key  # Insert the key at its correct position
+    return arr
+
+# Example usage
+arr = [64, 25, 12, 22, 11]
+print("Sorted array:", insertion_sort(arr))
+```
+
+**Explanation**:
+- The key element is compared with the elements in the sorted part.
+- The sorted part is shifted to make space for the key.
+- The key is placed in its correct position.
+
+---
+
+#### **4. Merge Sort**
+
+**Merge Sort** is a **divide and conquer** algorithm. It divides the array into halves, sorts each half recursively, and then merges the sorted halves into a single sorted array.
+
+**Time Complexity**: O(n log n)
+
+```python
+# Merge Sort Algorithm
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2  # Find the middle of the array
+        left_half = arr[:mid]  # Divide the array into two halves
+        right_half = arr[mid:]
+
+        merge_sort(left_half)  # Sort the left half
+        merge_sort(right_half)  # Sort the right half
+
+        i = j = k = 0
+        # Merge the sorted halves into a single sorted array
+        while i < len(left_half) and j < len(right_half):
+            if left_half[i] < right_half[j]:
+                arr[k] = left_half[i]
+                i += 1
+            else:
+                arr[k] = right_half[j]
+                j += 1
+            k += 1
+
+        # Copy any remaining elements from the left half
+        while i < len(left_half):
+            arr[k] = left_half[i]
+            i += 1
+            k += 1
+
+        # Copy any remaining elements from the right half
+        while j < len(right_half):
+            arr[k] = right_half[j]
+            j += 1
+            k += 1
+
+    return arr
+
+# Example usage
+arr = [38, 27, 43, 3, 9, 82, 10]
+print("Sorted array:", merge_sort(arr))
+```
+
+**Explanation**:
+- The array is repeatedly divided into halves until the subarrays contain only one element.
+- These subarrays are then merged back together in sorted order.
+
+---
+
+#### **5. Quick Sort**
+
+**Quick Sort** is another **divide and conquer** algorithm. It picks a pivot element from the array and partitions the array around the pivot, such that elements smaller than the pivot go to the left, and elements greater than the pivot go to the right. The subarrays are then sorted recursively.
+
+**Time Complexity**: O(n log n) on average, but O(n^2) in the worst case.
+
+```python
+# Quick Sort Algorithm
+def quick_sort(arr):
+    if len(arr) <= 1:  # Base case: array is already sorted
+        return arr
+    pivot = arr[len(arr) // 2]  # Choose the middle element as the pivot
+    left = [x for x in arr if x < pivot]  # Elements less than pivot
+    middle = [x for x in arr if x == pivot]  # Elements equal to pivot
+    right = [x for x in arr if x > pivot]  # Elements greater than pivot
+    return quick_sort(left) + middle + quick_sort(right)  # Recursively sort the subarrays
+
+# Example usage
+arr = [38, 27, 43, 3, 9, 82, 10]
+print("Sorted array:", quick_sort(arr))
+```
+
+**Explanation**:
+- The pivot element is chosen, and the array is divided into three subarrays: one with elements less than the pivot, one with elements equal to the pivot, and one with elements greater than the pivot.
+- Each subarray is sorted recursively.
+
+---
+# 7. Searching Algorithms – Linear and Binary Search.
+---
+
+### **1. Linear Search (Basic)**
+
+```python
+# Basic Linear Search Algorithm
+def linear_search(arr, target):
+    for index, value in enumerate(arr):
+        if value == target:
+            return index
+    return -1  # Element not found
+
+# Example usage
+arr = [10, 20, 30, 40, 50]
+target = 30
+result = linear_search(arr, target)
+print(f"Element {target} found at index {result}" if result != -1 else f"Element {target} not found.")
+```
+
+---
+
+### **2. Linear Search (With Index Check)**
+
+```python
+# Linear Search with index check
+def linear_search_with_check(arr, target):
+    if not arr:
+        return "The list is empty."
+    for index, value in enumerate(arr):
+        if value == target:
+            return index
+    return "Element not found."
+
+# Example usage
+arr = [12, 23, 34, 45]
+target = 23
+result = linear_search_with_check(arr, target)
+print(result)
+```
+
+---
+
+### **3. Linear Search (Recursive)**
+
+```python
+# Linear Search using Recursion
+def linear_search_recursive(arr, target, index=0):
+    if index == len(arr):
+        return -1  # Element not found
+    if arr[index] == target:
+        return index
+    return linear_search_recursive(arr, target, index + 1)
+
+# Example usage
+arr = [1, 3, 5, 7, 9]
+target = 5
+result = linear_search_recursive(arr, target)
+print(f"Element {target} found at index {result}" if result != -1 else f"Element {target} not found.")
+```
+
+---
+
+### **4. Binary Search (Recursive)**
+
+```python
+# Binary Search using Recursion
+def binary_search_recursive(arr, target, left=0, right=None):
+    if right is None:
+        right = len(arr) - 1
+    if left > right:
+        return -1  # Element not found
+    mid = (left + right) // 2
+    if arr[mid] == target:
+        return mid
+    elif arr[mid] < target:
+        return binary_search_recursive(arr, target, mid + 1, right)
+    else:
+        return binary_search_recursive(arr, target, left, mid - 1)
+
+# Example usage
+arr = [2, 4, 6, 8, 10, 12]
+target = 8
+result = binary_search_recursive(arr, target)
+print(f"Element {target} found at index {result}" if result != -1 else f"Element {target} not found.")
+```
+
+---
+
+### **5. Binary Search (Iterative)**
+
+```python
+# Iterative Binary Search
+def binary_search_iterative(arr, target):
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1  # Element not found
+
+# Example usage
+arr = [1, 4, 7, 9, 13, 15]
+target = 9
+result = binary_search_iterative(arr, target)
+print(f"Element {target} found at index {result}" if result != -1 else f"Element {target} not found.")
+```
+
+---
+
+### **6. Binary Search (Finding Lower Bound)**
+
+```python
+# Binary Search to find the lower bound (first occurrence)
+def lower_bound(arr, target):
+    left, right = 0, len(arr) - 1
+    result = -1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] >= target:
+            result = mid
+            right = mid - 1
+        else:
+            left = mid + 1
+    return result
+
+# Example usage
+arr = [1, 2, 4, 4, 5, 6]
+target = 4
+result = lower_bound(arr, target)
+print(f"Lower bound of {target} is at index {result}" if result != -1 else f"Element {target} not found.")
+```
+
+---
+
+### **7. Binary Search (Finding Upper Bound)**
+
+```python
+# Binary Search to find the upper bound (first element greater than target)
+def upper_bound(arr, target):
+    left, right = 0, len(arr) - 1
+    result = -1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] > target:
+            result = mid
+            right = mid - 1
+        else:
+            left = mid + 1
+    return result
+
+# Example usage
+arr = [1, 2, 4, 4, 5, 6]
+target = 4
+result = upper_bound(arr, target)
+print(f"Upper bound of {target} is at index {result}" if result != -1 else f"Element {target} not found.")
+```
+
+---
+
+### **8. Exponential Search**
+
+**Exponential Search** is used to find an element in a sorted array by checking progressively larger indices exponentially, and then applying binary search on the found range.
+
+```python
+# Exponential Search Algorithm
+def exponential_search(arr, target):
+    if arr[0] == target:
+        return 0
+    index = 1
+    while index < len(arr) and arr[index] <= target:
+        index *= 2
+    return binary_search_iterative(arr, target, index // 2, min(index, len(arr) - 1))
+
+# Example usage
+arr = [1, 2, 4, 10, 12, 19, 21, 25, 29]
+target = 10
+result = exponential_search(arr, target)
+print(f"Element {target} found at index {result}" if result != -1 else f"Element {target} not found.")
+```
+
+**Explanation of Exponential Search**:
+1. First, check if the target is at the first position.
+2. Then, exponentially increase the search range (1, 2, 4, 8, 16...).
+3. Once the target is likely within a range, apply **Binary Search** to that range.
+
+---
+
+### **Summary of All Search Programs**:
+
+1. **Linear Search (Basic)**: A straightforward search through the list.
+2. **Linear Search (With Index Check)**: Checks for an empty list before searching.
+3. **Linear Search (Recursive)**: A recursive version of the basic linear search.
+4. **Binary Search (Recursive)**: Recursively divides the list to find the target.
+5. **Binary Search (Iterative)**: Non-recursive version of binary search.
+6. **Binary Search (Lower Bound)**: Finds the first occurrence of the target or the lower bound.
+7. **Binary Search (Upper Bound)**: Finds the first element greater than the target.
+8. **Exponential Search**: Searches exponentially and then applies binary search.
+
+---
+
+# 8. Hashing – Hash tables and collision handling.
+
+---
+
+### **1. What is Hashing?**
+Hashing is the process of converting an input (often a string or an object) into a fixed-size string of characters, which typically looks like a random number. The value generated is called a **hash code**.
+
+### **2. What is a Hash Table?**
+A **hash table** is a data structure that stores data in an associative array-like format, where a **key** maps to a **value**. The hash function is used to convert the key into an index for storing the value in an array.
+
+### **3. Hash Function**
+A **hash function** takes a key and converts it into an index in an array. Ideally, the function distributes the keys evenly across the array to minimize **collisions**.
+
+---
+
+### **4. Types of Collision Handling**
+
+1. **Chaining**: When two keys hash to the same index, they are stored in a linked list at that index.
+2. **Open Addressing**: When a collision occurs, the algorithm searches for the next available slot within the table using a certain probing technique (linear probing, quadratic probing, etc.).
+
+---
+
+### **Now, let’s go over multiple examples.**
+
+---
+
+### **1. Basic Hash Table Implementation (Without Collision Handling)**
+
+```python
+# Basic Hash Table Implementation
+class HashTable:
+    def __init__(self, size):
+        self.size = size
+        self.table = [None] * self.size
+
+    def hash_function(self, key):
+        return hash(key) % self.size
+
+    def insert(self, key, value):
+        index = self.hash_function(key)
+        self.table[index] = value
+
+    def get(self, key):
+        index = self.hash_function(key)
+        return self.table[index]
+
+# Example usage
+ht = HashTable(10)
+ht.insert("apple", 100)
+ht.insert("banana", 200)
+
+print("Apple:", ht.get("apple"))    # Output: 100
+print("Banana:", ht.get("banana"))  # Output: 200
+```
+
+**Explanation**: This is a simple hash table where the `insert` method puts the value at the index computed by the hash function. The `get` method retrieves the value.
+
+---
+
+### **2. Handling Collisions using Chaining**
+
+```python
+# Hash Table with Collision Handling using Chaining (Linked List)
+class HashTableChaining:
+    def __init__(self, size):
+        self.size = size
+        self.table = [[] for _ in range(size)]  # List of lists for chaining
+
+    def hash_function(self, key):
+        return hash(key) % self.size
+
+    def insert(self, key, value):
+        index = self.hash_function(key)
+        # Append to the linked list at the index
+        for item in self.table[index]:
+            if item[0] == key:
+                item[1] = value  # Update value if key already exists
+                return
+        self.table[index].append([key, value])
+
+    def get(self, key):
+        index = self.hash_function(key)
+        for item in self.table[index]:
+            if item[0] == key:
+                return item[1]
+        return None  # Return None if key is not found
+
+# Example usage
+ht = HashTableChaining(10)
+ht.insert("apple", 100)
+ht.insert("banana", 200)
+ht.insert("orange", 300)
+
+print("Apple:", ht.get("apple"))    # Output: 100
+print("Banana:", ht.get("banana"))  # Output: 200
+print("Orange:", ht.get("orange"))  # Output: 300
+```
+
+**Explanation**: This implementation uses chaining, where each index in the table holds a list (or linked list) of key-value pairs. If a collision occurs, the new key-value pair is appended to the list at that index.
+
+---
+
+### **3. Handling Collisions using Linear Probing (Open Addressing)**
+
+```python
+# Hash Table with Collision Handling using Linear Probing
+class HashTableLinearProbing:
+    def __init__(self, size):
+        self.size = size
+        self.table = [None] * self.size
+
+    def hash_function(self, key):
+        return hash(key) % self.size
+
+    def insert(self, key, value):
+        index = self.hash_function(key)
+        original_index = index
+
+        while self.table[index] is not None:
+            if self.table[index][0] == key:  # Key already exists, update the value
+                self.table[index] = (key, value)
+                return
+            index = (index + 1) % self.size
+            if index == original_index:
+                raise Exception("Hash Table is full")
+
+        self.table[index] = (key, value)
+
+    def get(self, key):
+        index = self.hash_function(key)
+        original_index = index
+
+        while self.table[index] is not None:
+            if self.table[index][0] == key:
+                return self.table[index][1]
+            index = (index + 1) % self.size
+            if index == original_index:
+                break  # We've looped back to the original index
+
+        return None  # Key not found
+
+# Example usage
+ht = HashTableLinearProbing(10)
+ht.insert("apple", 100)
+ht.insert("banana", 200)
+ht.insert("cherry", 300)
+
+print("Apple:", ht.get("apple"))    # Output: 100
+print("Banana:", ht.get("banana"))  # Output: 200
+print("Cherry:", ht.get("cherry"))  # Output: 300
+```
+
+**Explanation**: **Linear Probing** is an open addressing collision resolution method. When a collision occurs, the algorithm checks the next index until an empty slot is found. The **wrap-around** ensures the index stays within bounds.
+
+---
+
+### **4. Handling Collisions using Quadratic Probing (Open Addressing)**
+
+```python
+# Hash Table with Collision Handling using Quadratic Probing
+class HashTableQuadraticProbing:
+    def __init__(self, size):
+        self.size = size
+        self.table = [None] * self.size
+
+    def hash_function(self, key):
+        return hash(key) % self.size
+
+    def insert(self, key, value):
+        index = self.hash_function(key)
+        i = 0
+        while self.table[index] is not None:
+            if self.table[index][0] == key:  # Key already exists, update value
+                self.table[index] = (key, value)
+                return
+            i += 1
+            index = (index + i * i) % self.size
+            if i == self.size:
+                raise Exception("Hash Table is full")
+
+        self.table[index] = (key, value)
+
+    def get(self, key):
+        index = self.hash_function(key)
+        i = 0
+        while self.table[index] is not None:
+            if self.table[index][0] == key:
+                return self.table[index][1]
+            i += 1
+            index = (index + i * i) % self.size
+            if i == self.size:
+                break
+        return None  # Key not found
+
+# Example usage
+ht = HashTableQuadraticProbing(10)
+ht.insert("apple", 100)
+ht.insert("banana", 200)
+ht.insert("grape", 300)
+
+print("Apple:", ht.get("apple"))    # Output: 100
+print("Banana:", ht.get("banana"))  # Output: 200
+print("Grape:", ht.get("grape"))    # Output: 300
+```
+
+**Explanation**: **Quadratic Probing** works similarly to linear probing, but instead of checking sequential positions, it checks with quadratic increments (1, 4, 9, 16…). This helps reduce clustering.
+
+---
+
+### **5. Resizing Hash Table**
+
+When the load factor (the number of elements divided by the size of the table) becomes too high, the hash table should be resized. Here’s an example of resizing.
+
+```python
+# Resizing Hash Table with Chaining
+class HashTableResizing:
+    def __init__(self, size):
+        self.size = size
+        self.table = [[] for _ in range(size)]
+
+    def hash_function(self, key):
+        return hash(key) % self.size
+
+    def insert(self, key, value):
+        if self.load_factor() > 0.7:  # Resize if the load factor exceeds 0.7
+            self.resize()
+        
+        index = self.hash_function(key)
+        for item in self.table[index]:
+            if item[0] == key:
+                item[1] = value
+                return
+        self.table[index].append([key, value])
+
+    def get(self, key):
+        index = self.hash_function(key)
+        for item in self.table[index]:
+            if item[0] == key:
+                return item[1]
+        return None
+
+    def load_factor(self):
+        return sum(len(bucket) for bucket in self.table) / self.size
+
+    def resize(self):
+        new_size = self.size * 2
+        new_table = [[] for _ in range(new_size)]
+        
+        for bucket in self.table:
+            for key, value in bucket:
+                index = hash(key) % new_size
+                new_table[index].append([key, value])
+        
+        self.size = new_size
+        self.table =
+
+ new_table
+
+# Example usage
+ht = HashTableResizing(4)
+ht.insert("apple", 100)
+ht.insert("banana", 200)
+ht.insert("grape", 300)
+ht.insert("orange", 400)
+
+print("Apple:", ht.get("apple"))    # Output: 100
+print("Banana:", ht.get("banana"))  # Output: 200
+print("Grape:", ht.get("grape"))    # Output: 300
+```
+
+**Explanation**: This implementation resizes the hash table by doubling its size when the load factor exceeds 0.7. The table is then rehashed to distribute the existing keys into the new table.
+
+---
+
+# 9. Trees – Binary Trees and Binary Search Trees (BST).
+
+---
+### **1. What is a Tree?**
+A **tree** is a hierarchical data structure consisting of nodes connected by edges. The top node is called the **root**, and the nodes without children are called **leaves**.
+
+### **2. Binary Tree**
+A **binary tree** is a type of tree where each node has at most two children: a **left child** and a **right child**. The tree can be empty, with just a root node, or it can grow to a large size.
+
+### **3. Binary Search Tree (BST)**
+A **Binary Search Tree (BST)** is a special kind of binary tree where the left child of a node contains values less than the node, and the right child contains values greater than the node. This property makes searching and sorting efficient.
+
+---
+
+### **Now, let's implement and explain different aspects of Binary Trees and BSTs.**
+
+---
+
+### **1. Basic Binary Tree Structure**
+
+```python
+# Binary Tree Node
+class Node:
+    def __init__(self, key):
+        self.left = None
+        self.right = None
+        self.value = key
+
+# Basic Binary Tree Implementation
+class BinaryTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        if not self.root:
+            self.root = Node(key)
+        else:
+            self._insert(self.root, key)
+
+    def _insert(self, node, key):
+        if key < node.value:
+            if node.left is None:
+                node.left = Node(key)
+            else:
+                self._insert(node.left, key)
+        else:
+            if node.right is None:
+                node.right = Node(key)
+            else:
+                self._insert(node.right, key)
+
+    def inorder(self, node):
+        if node:
+            self.inorder(node.left)
+            print(node.value, end=" ")
+            self.inorder(node.right)
+
+# Example usage
+bt = BinaryTree()
+bt.insert(10)
+bt.insert(20)
+bt.insert(5)
+bt.insert(15)
+bt.insert(30)
+
+print("In-order traversal of Binary Tree:")
+bt.inorder(bt.root)  # Output: 5 10 15 20 30
+```
+
+**Explanation**: This is a basic binary tree where nodes are inserted in such a way that each node has at most two children. The `inorder` traversal prints the nodes in sorted order.
+
+---
+
+### **2. Binary Search Tree (BST) Implementation**
+
+```python
+# Binary Search Tree Node
+class BSTNode:
+    def __init__(self, key):
+        self.left = None
+        self.right = None
+        self.value = key
+
+# Binary Search Tree Implementation
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        if not self.root:
+            self.root = BSTNode(key)
+        else:
+            self._insert(self.root, key)
+
+    def _insert(self, node, key):
+        if key < node.value:
+            if node.left is None:
+                node.left = BSTNode(key)
+            else:
+                self._insert(node.left, key)
+        else:
+            if node.right is None:
+                node.right = BSTNode(key)
+            else:
+                self._insert(node.right, key)
+
+    def inorder(self, node):
+        if node:
+            self.inorder(node.left)
+            print(node.value, end=" ")
+            self.inorder(node.right)
+
+    def search(self, key):
+        return self._search(self.root, key)
+
+    def _search(self, node, key):
+        if node is None or node.value == key:
+            return node
+        if key < node.value:
+            return self._search(node.left, key)
+        return self._search(node.right, key)
+
+# Example usage
+bst = BinarySearchTree()
+bst.insert(10)
+bst.insert(20)
+bst.insert(5)
+bst.insert(15)
+bst.insert(30)
+
+print("In-order traversal of BST:")
+bst.inorder(bst.root)  # Output: 5 10 15 20 30
+
+# Searching for a key in the BST
+search_result = bst.search(15)
+print("\nSearching for 15:", "Found" if search_result else "Not Found")
+```
+
+**Explanation**: The **Binary Search Tree (BST)** follows the rule where left nodes are less than the parent node and right nodes are greater. We also added a `search` method to find a key in the BST.
+
+---
+
+### **3. Deleting a Node in Binary Search Tree (BST)**
+
+```python
+# Delete node in BST
+class BSTDeleteNode:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        if not self.root:
+            self.root = BSTNode(key)
+        else:
+            self._insert(self.root, key)
+
+    def _insert(self, node, key):
+        if key < node.value:
+            if node.left is None:
+                node.left = BSTNode(key)
+            else:
+                self._insert(node.left, key)
+        else:
+            if node.right is None:
+                node.right = BSTNode(key)
+            else:
+                self._insert(node.right, key)
+
+    def inorder(self, node):
+        if node:
+            self.inorder(node.left)
+            print(node.value, end=" ")
+            self.inorder(node.right)
+
+    def delete(self, root, key):
+        if root is None:
+            return root
+
+        if key < root.value:
+            root.left = self.delete(root.left, key)
+        elif key > root.value:
+            root.right = self.delete(root.right, key)
+        else:
+            # Node with only one child or no child
+            if root.left is None:
+                return root.right
+            elif root.right is None:
+                return root.left
+
+            # Node with two children: Get the inorder successor (smallest in the right subtree)
+            root.value = self.min_value_node(root.right).value
+            root.right = self.delete(root.right, root.value)
+
+        return root
+
+    def min_value_node(self, node):
+        current = node
+        while current.left:
+            current = current.left
+        return current
+
+# Example usage
+bst = BSTDeleteNode()
+bst.insert(10)
+bst.insert(20)
+bst.insert(5)
+bst.insert(15)
+bst.insert(30)
+
+print("In-order traversal before deletion:")
+bst.inorder(bst.root)  # Output: 5 10 15 20 30
+bst.root = bst.delete(bst.root, 20)  # Deleting node 20
+print("\nIn-order traversal after deletion of 20:")
+bst.inorder(bst.root)  # Output: 5 10 15 30
+```
+
+**Explanation**: Deleting a node in a BST involves three cases:
+1. **No children**: Simply remove the node.
+2. **One child**: Replace the node with its child.
+3. **Two children**: Find the **inorder successor** (the smallest node in the right subtree) and replace the node with it.
+
+---
+
+### **4. Finding Maximum and Minimum Values in BST**
+
+```python
+# Finding Min and Max values in BST
+class BSTMinMax:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        if not self.root:
+            self.root = BSTNode(key)
+        else:
+            self._insert(self.root, key)
+
+    def _insert(self, node, key):
+        if key < node.value:
+            if node.left is None:
+                node.left = BSTNode(key)
+            else:
+                self._insert(node.left, key)
+        else:
+            if node.right is None:
+                node.right = BSTNode(key)
+            else:
+                self._insert(node.right, key)
+
+    def min_value(self):
+        return self._min_value(self.root)
+
+    def _min_value(self, node):
+        current = node
+        while current.left:
+            current = current.left
+        return current.value
+
+    def max_value(self):
+        return self._max_value(self.root)
+
+    def _max_value(self, node):
+        current = node
+        while current.right:
+            current = current.right
+        return current.value
+
+# Example usage
+bst = BSTMinMax()
+bst.insert(10)
+bst.insert(20)
+bst.insert(5)
+bst.insert(15)
+bst.insert(30)
+
+print("Minimum value in BST:", bst.min_value())  # Output: 5
+print("Maximum value in BST:", bst.max_value())  # Output: 30
+```
+
+**Explanation**: In a BST, the **minimum value** is found by traversing the leftmost child, and the **maximum value** is found by traversing the rightmost child.
+
+---
+
+### **5. Depth of a Binary Tree**
+
+```python
+# Finding the Depth of a Binary Tree
+class TreeDepth:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        if not self.root:
+            self.root = Node(key)
+        else:
+            self._insert(self.root, key)
+
+    def _insert(self, node, key):
+        if key < node.value:
+            if node.left is None:
+                node.left = Node(key)
+            else:
+                self._insert(node.left, key)
+        else:
+            if node.right is None:
+                node.right = Node(key)
+            else:
+                self._insert(node.right, key)
+
+    def depth(self, node):
+        if node is None:
+            return 0
+        left_depth = self.depth(node.left)
+        right_depth = self
+
+.depth(node.right)
+        return max(left_depth, right_depth) + 1
+
+# Example usage
+bt = TreeDepth()
+bt.insert(10)
+bt.insert(20)
+bt.insert(5)
+bt.insert(15)
+bt.insert(30)
+
+print("Depth of the Binary Tree:", bt.depth(bt.root))  # Output: 3
+```
+
+**Explanation**: The **depth** of a tree is the longest path from the root node to a leaf. The depth is calculated recursively by comparing the left and right subtree depths.
+
+---
+# 10. Graphs – Basics, DFS, BFS.
+---
+
+### **1. What is a Graph?**
+A **graph** is a collection of **nodes (vertices)** and **edges (connections)** between those nodes. A graph can represent various real-world systems, such as social networks, computer networks, or transportation systems.
+
+- **Vertices**: The entities in the graph (e.g., people, cities, etc.).
+- **Edges**: The connections between vertices (e.g., relationships between people, roads between cities).
+
+Graphs can be:
+- **Directed**: Edges have a direction (e.g., one-way streets).
+- **Undirected**: Edges have no direction (e.g., two-way streets).
+- **Weighted**: Each edge has a weight (e.g., distance, cost).
+- **Unweighted**: All edges have the same weight.
+
+---
+
+### **2. Graph Representation**
+
+Graphs can be represented in two common ways:
+
+- **Adjacency Matrix**: A 2D matrix where `matrix[i][j] = 1` if there's an edge between node `i` and node `j`, and `0` otherwise.
+- **Adjacency List**: A list where each node has a list of adjacent nodes (i.e., the nodes it's directly connected to).
+
+We'll implement both methods.
+
+---
+
+### **3. Graph Representation using Adjacency List**
+
+```python
+# Graph Representation using Adjacency List (Undirected Graph)
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        # Add edge from u to v and v to u (undirected graph)
+        if u not in self.graph:
+            self.graph[u] = []
+        if v not in self.graph:
+            self.graph[v] = []
+        self.graph[u].append(v)
+        self.graph[v].append(u)
+
+    def display(self):
+        for vertex in self.graph:
+            print(f"{vertex}: {self.graph[vertex]}")
+
+# Example usage
+g = Graph()
+g.add_edge(1, 2)
+g.add_edge(1, 3)
+g.add_edge(2, 4)
+g.add_edge(3, 4)
+
+print("Graph representation using adjacency list:")
+g.display()
+```
+
+**Explanation**: This implementation of an undirected graph uses an adjacency list. The `add_edge()` method adds edges between two vertices.
+
+---
+
+### **4. Depth-First Search (DFS)**
+**DFS** explores as far as possible along each branch before backtracking. It's implemented using recursion or a stack.
+
+#### **DFS using Recursion**
+```python
+# Depth-First Search (DFS) Implementation
+class GraphDFS:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        if u not in self.graph:
+            self.graph[u] = []
+        if v not in self.graph:
+            self.graph[v] = []
+        self.graph[u].append(v)
+        self.graph[v].append(u)
+
+    def dfs(self, start):
+        visited = set()  # To keep track of visited nodes
+        self._dfs_recursive(start, visited)
+
+    def _dfs_recursive(self, node, visited):
+        if node not in visited:
+            print(node, end=" ")
+            visited.add(node)
+            for neighbor in self.graph[node]:
+                self._dfs_recursive(neighbor, visited)
+
+# Example usage
+g_dfs = GraphDFS()
+g_dfs.add_edge(1, 2)
+g_dfs.add_edge(1, 3)
+g_dfs.add_edge(2, 4)
+g_dfs.add_edge(3, 4)
+
+print("DFS traversal starting from node 1:")
+g_dfs.dfs(1)  # Output: 1 2 4 3
+```
+
+**Explanation**: In DFS, we start from a node and explore each branch before backtracking. The recursive function `dfs_recursive` helps traverse the graph.
+
+#### **DFS using Stack**
+```python
+# DFS using Stack
+class GraphDFSStack:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        if u not in self.graph:
+            self.graph[u] = []
+        if v not in self.graph:
+            self.graph[v] = []
+        self.graph[u].append(v)
+        self.graph[v].append(u)
+
+    def dfs(self, start):
+        visited = set()
+        stack = [start]
+        while stack:
+            node = stack.pop()
+            if node not in visited:
+                print(node, end=" ")
+                visited.add(node)
+                for neighbor in self.graph[node]:
+                    if neighbor not in visited:
+                        stack.append(neighbor)
+
+# Example usage
+g_dfs_stack = GraphDFSStack()
+g_dfs_stack.add_edge(1, 2)
+g_dfs_stack.add_edge(1, 3)
+g_dfs_stack.add_edge(2, 4)
+g_dfs_stack.add_edge(3, 4)
+
+print("\nDFS traversal using stack starting from node 1:")
+g_dfs_stack.dfs(1)  # Output: 1 3 4 2
+```
+
+**Explanation**: This non-recursive version of DFS uses a stack. The stack helps backtrack and explore deeper nodes.
+
+---
+
+### **5. Breadth-First Search (BFS)**
+**BFS** explores all neighbors of a node before moving to the next level. It's implemented using a queue.
+
+```python
+# Breadth-First Search (BFS) Implementation
+from collections import deque
+
+class GraphBFS:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        if u not in self.graph:
+            self.graph[u] = []
+        if v not in self.graph:
+            self.graph[v] = []
+        self.graph[u].append(v)
+        self.graph[v].append(u)
+
+    def bfs(self, start):
+        visited = set()
+        queue = deque([start])
+        visited.add(start)
+        
+        while queue:
+            node = queue.popleft()
+            print(node, end=" ")
+            for neighbor in self.graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+
+# Example usage
+g_bfs = GraphBFS()
+g_bfs.add_edge(1, 2)
+g_bfs.add_edge(1, 3)
+g_bfs.add_edge(2, 4)
+g_bfs.add_edge(3, 4)
+
+print("BFS traversal starting from node 1:")
+g_bfs.bfs(1)  # Output: 1 2 3 4
+```
+
+**Explanation**: BFS starts at a given node, explores all neighbors, and proceeds to explore neighbors' neighbors level by level. It uses a **queue** to manage the nodes yet to be visited.
+
+---
+
+### **6. Directed Graphs**
+
+In directed graphs, edges have a direction. We can use the same BFS and DFS algorithms for directed graphs, but the edges are one-way only.
+
+```python
+# Directed Graph using Adjacency List
+class DirectedGraph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        if u not in self.graph:
+            self.graph[u] = []
+        self.graph[u].append(v)  # One-way edge from u to v
+
+    def display(self):
+        for vertex in self.graph:
+            print(f"{vertex} -> {self.graph[vertex]}")
+
+# Example usage
+g_directed = DirectedGraph()
+g_directed.add_edge(1, 2)
+g_directed.add_edge(1, 3)
+g_directed.add_edge(2, 4)
+
+print("Directed Graph representation:")
+g_directed.display()
+```
+
+**Explanation**: In a **directed graph**, edges point in one direction. The adjacency list represents these edges as one-way connections.
+
+---

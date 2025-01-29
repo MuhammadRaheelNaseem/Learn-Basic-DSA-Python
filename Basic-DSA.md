@@ -386,3 +386,262 @@ print(quick_sort(unsorted_list))
 ```
 
 ---
+
+# **3. Stacks & Queues** – Implementation and applications.
+Stacks and Queues are fundamental data structures used for storing and managing data efficiently. These structures follow specific order mechanisms to retrieve and store data.
+
+## **Real-World Examples:**
+- **Stacks:**
+  - Undo/Redo functionality in a text editor.
+  - Browser back and forward navigation.
+  - Call stack in recursion.
+- **Queues:**
+  - Printer job scheduling.
+  - Customer service call handling.
+  - Process scheduling in operating systems.
+
+
+# **i. Stack (LIFO – Last In, First Out)**
+A stack follows the **LIFO (Last In, First Out)** principle, meaning the last added element is the first one to be removed.
+
+
+```python
+# Stack Implementation using a list
+
+# Step 1: Initialize an empty stack
+stack = []
+
+# Step 2: Push elements onto the stack
+stack.append(10)  # Push 10
+stack.append(20)  # Push 20
+stack.append(30)  # Push 30
+
+# Step 3: Display the current stack
+print("Current Stack:", stack)  # Output: [10, 20, 30]
+```
+
+---
+
+#### ii. Stack Pop Operation
+
+**Concept**: The pop operation removes the top element from the stack.
+
+```python
+# Stack Pop Operation
+
+# Step 1: Initialize the stack
+stack = [10, 20, 30]
+
+# Step 2: Pop the top element from the stack
+popped_item = stack.pop()  # Removes 30
+
+# Step 3: Display the popped item and the current stack
+print("Popped Item:", popped_item)  # Output: 30
+print("Stack after popping:", stack)  # Output: [10, 20]
+```
+
+---
+
+#### 3. Stack Peek Operation
+
+**Concept**: The peek operation allows you to see the top element without removing it.
+
+```python
+# Stack Peek Operation
+
+# Step 1: Initialize the stack
+stack = [10, 20, 30]
+
+# Step 2: Peek at the top element
+if stack:  # Check if the stack is not empty
+    top_item = stack[-1]  # Get the last item
+    print("Top Item (Peek):", top_item)  # Output: 30
+else:
+    print("Stack is empty")
+```
+
+---
+
+#### 4. Stack Size Operation
+
+**Concept**: The size operation returns the number of elements in the stack.
+
+```python
+# Stack Size Operation
+
+# Step 1: Initialize the stack
+stack = [10, 20, 30]
+
+# Step 2: Get the size of the stack
+stack_size = len(stack)
+
+# Step 3: Display the size
+print("Size of Stack:", stack_size)  # Output: 3
+```
+
+---
+
+#### 5. Check if Stack is Empty
+
+**Concept**: This operation checks whether the stack has any elements.
+
+```python
+# Check if Stack is Empty
+
+# Step 1: Initialize the stack
+stack = []
+
+# Step 2: Check if the stack is empty
+is_empty = len(stack) == 0
+
+# Step 3: Display the result
+print("Is Stack Empty?", is_empty)  # Output: True
+```
+
+---
+
+#### 6. Stack LIFO Concept
+
+**Concept**: Demonstrating the Last In, First Out behavior of stacks.
+
+```python
+# Stack LIFO Concept
+
+# Step 1: Initialize the stack
+stack = []
+
+# Step 2: Push more items onto the stack
+stack.append(10)
+stack.append(20)
+stack.append(30)
+
+# Step 3: Display the stack
+print("Stack after pushing 10, 20, 30:", stack)  # Output: [10, 20, 30]
+
+# Step 4: Pop items and show LIFO behavior
+print("Popped Item (should be 30):", stack.pop())  # Output: 30
+print("Popped Item (should be 20):", stack.pop())  # Output: 20
+```
+
+---
+
+### Queues
+
+#### 7. Basic Queue Implementation
+
+**Concept**: A queue is a collection of elements that follows the First In, First Out (FIFO) principle.
+
+```python
+# Queue Implementation using a list
+
+# Step 1: Initialize an empty queue
+queue = []
+
+# Step 2: Enqueue elements into the queue
+queue.append(10)  # Enqueue 10
+queue.append(20)  # Enqueue 20
+queue.append(30)  # Enqueue 30
+
+# Step 3: Display the current queue
+print("Current Queue:", queue)  # Output: [10, 20, 30]
+```
+
+---
+
+#### 8. Queue Dequeue Operation
+
+**Concept**: The dequeue operation removes the front element from the queue.
+
+```python
+# Queue Dequeue Operation
+
+# Step 1: Initialize the queue
+queue = [10, 20, 30]
+
+# Step 2: Dequeue the front element from the queue
+dequeued_item = queue.pop(0)  # Removes  10
+
+# Step 3: Display the dequeued item and the current queue
+print("Dequeued Item:", dequeued_item)  # Output: 10
+print("Queue after dequeuing:", queue)  # Output: [20, 30]
+```
+
+---
+
+#### 9. Queue Enqueue Operation
+
+**Concept**: The enqueue operation adds an element to the back of the queue.
+
+```python
+# Queue Enqueue Operation
+
+# Step 1: Initialize the queue
+queue = [20, 30]
+
+# Step 2: Enqueue a new element
+queue.append(40)  # Enqueue 40
+
+# Step 3: Display the current queue
+print("Queue after enqueuing 40:", queue)  # Output: [20, 30, 40]
+```
+
+---
+
+#### 10. Queue Size Operation
+
+**Concept**: The size operation returns the number of elements in the queue.
+
+```python
+# Queue Size Operation
+
+# Step 1: Initialize the queue
+queue = [20, 30, 40]
+
+# Step 2: Get the size of the queue
+queue_size = len(queue)
+
+# Step 3: Display the size
+print("Size of Queue:", queue_size)  # Output: 3
+```
+
+---
+
+#### 11. Check if Queue is Empty
+
+**Concept**: This operation checks whether the queue has any elements.
+
+```python
+# Check if Queue is Empty
+
+# Step 1: Initialize the queue
+queue = []
+
+# Step 2: Check if the queue is empty
+is_empty = len(queue) == 0
+
+# Step 3: Display the result
+print("Is Queue Empty?", is_empty)  # Output: True
+```
+
+---
+
+#### 12. Queue FIFO Concept
+
+**Concept**: Demonstrating the First In, First Out behavior of queues.
+
+```python
+# Queue FIFO Concept
+
+# Step 1: Initialize the queue
+queue = [10, 20, 30]
+
+# Step 2: Display the queue
+print("Queue before dequeuing:", queue)  # Output: [10, 20, 30]
+
+# Step 3: Dequeue items and show FIFO behavior
+print("Dequeued Item (should be 10):", queue.pop(0))  # Output: 10
+print("Dequeued Item (should be 20):", queue.pop(0))  # Output: 20
+print("Queue after dequeuing:", queue)  # Output: [30]
+```
+
+---

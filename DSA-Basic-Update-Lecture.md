@@ -419,3 +419,269 @@ print("Element found at index:", binary_search(arr, 4, 0, len(arr) - 1))  # Outp
 ```
 
 ---
+
+
+
+
+### **6. Sorting Algorithms – Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort**
+
+#### **Real-World Example: "Sorting Books in a Library"**
+- **Explanation**: Sorting is all about arranging elements in a specific order. For instance, when sorting books in a library, you can either use a selection of methods like bubble sort, selection sort, or more efficient ones like merge or quick sort.
+
+#### **Python Code Examples**:
+
+1. **Bubble Sort**
+   - *Bubble sort repeatedly compares adjacent elements and swaps them if they are in the wrong order.*
+   
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]  # Swap elements
+    return arr
+
+# Example usage
+arr = [64, 34, 25, 12, 22, 11, 90]
+print("Sorted array using Bubble Sort:", bubble_sort(arr))  # Output: [11, 12, 22, 25, 34, 64, 90]
+```
+
+2. **Selection Sort**
+   - *Selection sort selects the smallest element from the unsorted part of the array and swaps it with the first unsorted element.*
+   
+```python
+def selection_sort(arr):
+    for i in range(len(arr)):
+        min_idx = i
+        for j in range(i+1, len(arr)):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]  # Swap smallest element
+    return arr
+
+# Example usage
+arr = [64, 25, 12, 22, 11]
+print("Sorted array using Selection Sort:", selection_sort(arr))  # Output: [11, 12, 22, 25, 64]
+```
+
+3. **Insertion Sort**
+   - *Insertion sort builds the final sorted array one element at a time by inserting each element into its correct position in the sorted part of the array.*
+   
+```python
+def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
+    return arr
+
+# Example usage
+arr = [64, 25, 12, 22, 11]
+print("Sorted array using Insertion Sort:", insertion_sort(arr))  # Output: [11, 12, 22, 25, 64]
+```
+
+4. **Merge Sort**
+   - *Merge Sort is a divide-and-conquer algorithm. It divides the array into two halves, recursively sorts each half, and then merges the two halves.*
+   
+```python
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2  # Finding the middle
+        left_half = arr[:mid]  # Left half
+        right_half = arr[mid:]  # Right half
+
+        merge_sort(left_half)  # Recursively sort left half
+        merge_sort(right_half)  # Recursively sort right half
+
+        i = j = k = 0
+        while i < len(left_half) and j < len(right_half):
+            if left_half[i] < right_half[j]:
+                arr[k] = left_half[i]
+                i += 1
+            else:
+                arr[k] = right_half[j]
+                j += 1
+            k += 1
+
+        while i < len(left_half):
+            arr[k] = left_half[i]
+            i += 1
+            k += 1
+
+        while j < len(right_half):
+            arr[k] = right_half[j]
+            j += 1
+            k += 1
+    return arr
+
+# Example usage
+arr = [38, 27, 43, 3, 9, 82, 10]
+print("Sorted array using Merge Sort:", merge_sort(arr))  # Output: [3, 9, 10, 27, 38, 43, 82]
+```
+
+5. **Quick Sort**
+   - *Quick Sort is another divide-and-conquer algorithm. It selects a pivot element and partitions the array into elements less than the pivot and greater than the pivot. Then, it recursively sorts the subarrays.*
+   
+```python
+def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]  # Choosing middle element as pivot
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort(left) + middle + quick_sort(right)
+
+# Example usage
+arr = [38, 27, 43, 3, 9, 82, 10]
+print("Sorted array using Quick Sort:", quick_sort(arr))  # Output: [3, 9, 10, 27, 38, 43, 82]
+```
+
+---
+
+### **7. Searching Algorithms – Linear and Binary Search**
+
+#### **Real-World Example: "Searching for a Book in a Library"**
+- **Explanation**: Searching algorithms are fundamental in locating an item from a collection. For example, linear search is like scanning books one by one in a library, while binary search is like using a catalog where books are sorted and searching for a book by splitting the catalog in half each time.
+
+#### **Python Code Examples**:
+
+1. **Linear Search**
+   - *Linear search checks every element in the list sequentially.*
+   
+```python
+def linear_search(arr, target):
+    for i, value in enumerate(arr):
+        if value == target:
+            return i  # Return index if found
+    return -1  # If target is not found
+
+# Example usage
+arr = [10, 20, 30, 40, 50]
+print("Element found at index:", linear_search(arr, 30))  # Output: 2
+```
+
+2. **Binary Search (Iterative)**
+   - *Binary search works on sorted arrays by repeatedly dividing the search space in half and narrowing down the target range.*
+   
+```python
+def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+
+# Example usage
+arr = [10, 20, 30, 40, 50]
+print("Element found at index:", binary_search(arr, 40))  # Output: 3
+```
+
+3. **Binary Search (Recursive)**
+   - *Recursive binary search is a cleaner version where the search is repeated on the half of the array where the element could be.*
+   
+```python
+def binary_search_recursive(arr, target, left, right):
+    if left > right:
+        return -1  # Target not found
+    mid = (left + right) // 2
+    if arr[mid] == target:
+        return mid
+    elif arr[mid] < target:
+        return binary_search_recursive(arr, target, mid + 1, right)
+    else:
+        return binary_search_recursive(arr, target, left, mid - 1)
+
+# Example usage
+arr = [10, 20, 30, 40, 50]
+print("Element found at index:", binary_search_recursive(arr, 40, 0, len(arr)-1))  # Output: 3
+```
+
+4. **Finding the Minimum Element Using Linear Search**
+   - *Finding the smallest element in the list using linear search*.
+   
+```python
+def find_min(arr):
+    min_value = arr[0]
+    for value in arr:
+        if value < min_value:
+            min_value = value
+    return min_value
+
+# Example usage
+arr = [10, 20, 5, 40, 50]
+print("Minimum element is:", find_min(arr))  # Output: 5
+```
+
+5. **Finding the Maximum Element Using Linear Search**
+   - *Finding the largest element in the list using linear search*.
+   
+```python
+def find_max(arr):
+    max_value = arr[0]
+    for value in arr:
+        if value > max_value:
+            max_value = value
+    return max_value
+
+# Example usage
+arr = [10, 20, 5, 40, 50]
+print("Maximum element is:", find_max(arr))  # Output: 50
+```
+
+---
+
+### **8. Hashing – Hash Tables and Collision Handling**
+
+#### **Real-World Example: "Password Storage Using Hashing"**
+- **Explanation**: Hashing is commonly used to store and retrieve data efficiently. For example, storing passwords in a database where the password is converted into a hash to protect the actual password.
+
+#### **Python Code Examples**:
+
+1. **Basic Hash Table**
+   - *A simple hash table for storing and retrieving user data*.
+   
+```python
+class HashTable:
+    def __init__(self):
+        self.table = {}
+
+    def insert(self, key, value):
+        self.table[key] = value
+
+    def get(self, key):
+        return self.table.get(key, "Not found")
+
+# Example usage
+ht = HashTable()
+ht.insert("user1", "password123")
+ht.insert("user2", "mypassword")
+print("Password for user1:", ht.get("user1"))  # Output: password123
+```
+
+2. **Hash Table with Collision Handling (Chaining)**
+   - *Handle collisions using chaining (linked lists at each index)*
+   
+```python
+class HashTableChaining:
+    def __init__(self):
+        self.size = 10
+        self.table = [[] for _ in range(self.size)]  # Chaining using list of lists
+
+    def hash_function(self, key):
+        return hash(key) % self.size
+
+    def insert(self, key, value):
+        index = self.hash_function(key)
+        for pair in self.table[index]:
+            if pair[0] == key:
+                pair

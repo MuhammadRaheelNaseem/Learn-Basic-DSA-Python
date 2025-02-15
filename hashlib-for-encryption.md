@@ -244,3 +244,233 @@ verify_integrity(message, original_hash)
 **Explanation**:
 - This example checks if the content (such as a message) has been altered by comparing the hash of the received data to the original hash.
 
+---
+
+Sure! Let's dive deeper into **`hashlib`** for the following advanced use cases:
+
+1. **Hashing other data types** like images and documents.
+2. **Hashing for authentication systems** (storing and verifying passwords).
+3. Exploring more **secure password hashing algorithms** like **bcrypt** and **PBKDF2**.
+
+---
+
+### **1. Hashing Other Data Types (Images and Documents)**
+
+Hashing can be applied to different data types, not just strings. You can use it to hash files (like images, documents, etc.) to verify their integrity or to ensure that no changes have been made.
+
+#### **Hashing an Image File**
+
+In this example, we will hash an image file (e.g., `.jpg` or `.png`) using SHA-256 to ensure its integrity.
+
+```python
+import hashlib
+
+def hash_image(file_path):
+    # Create a SHA-256 hash object
+    hash_object = hashlib.sha256()
+
+    try:
+        with open(file_path, 'rb') as image_file:
+            # Read the file in binary mode
+            chunk = image_file.read(4096)  # Read the file in chunks to save memory
+            while chunk:
+                hash_object.update(chunk)  # Update the hash with the chunk of the file
+                chunk = image_file.read(4096)  # Read the next chunk
+
+        # Return the hexadecimal digest of the file's hash
+        return hash_object.hexdigest()
+    
+    except FileNotFoundError:
+        return "File not found!"
+
+# Example Usage:
+image_path = input("Enter the path of the image to hash: ")
+hashed_image = hash_image(image_path)
+print(f"SHA-256 hash of the image: {hashed_image}")
+```
+
+**Explanation**:
+- The file is read in **binary mode** (`'rb'`), and chunks are used to prevent memory overload with large files.
+- The **SHA-256 hash** is computed, and the digest is returned.
+
+#### **Hashing a Document (Text File)**
+
+Now, let's hash a text document. We can apply the same concept to documents (e.g., `.txt`, `.pdf`) by reading them and hashing their content.
+
+```python
+def hash_document(file_path):
+    hash_object = hashlib.sha256()
+    
+    try:
+        with open(file_path, 'rb') as doc_file:
+            chunk = doc_file.read(4096)  # Read the file in chunks
+            while chunk:
+                hash_object.update(chunk)
+                chunk = doc_file.read(4096)
+
+        return hash_object.hexdigest()
+    
+    except FileNotFoundError:
+        return "File not found!"
+
+# Example Usage:
+document_path = input("Enter the path of the document to hash: ")
+hashed_document = hash_document(document_path)
+print(f"SHA-256 hash of the document: {hashed_document}")
+```
+
+**Explanation**:
+- This script can be used for documents as well. It's the same process as the image example: read the file in chunks and update the hash.
+
+---
+
+### **2. Hashing for Authentication Systems (Storing and Verifying Passwords)**
+
+For authentication systems, it's important to **hash passwords** instead of storing them directly to prevent unauthorized access. We'll cover basic password hashing using `hashlib` and later look into more advanced methods.
+
+#### **Basic Password Hashing Using SHA-256**
+
+```python
+import hashlib
+
+def hash_password(password):
+    # Create a SHA-256 hash object
+    hash_object = hashlib.sha256()
+    # Update the hash object with the encoded password
+    hash_object.update(password.encode())
+    # Return the hexadecimal digest of the password
+    return hash_object.hexdigest()
+
+def verify_password(stored_hash, input_password):
+    # Hash the input password and compare with the stored hash
+    return stored_hash == hash_password(input_password)
+
+# Example Usage:
+password = input("Enter a password to hash: ")
+stored_hash = hash_password(password)  # Hash the password and store it securely
+
+print(f"Stored password hash: {stored_hash}")
+
+# Verifying the password
+input_password = input("Enter the password to verify: ")
+if verify_password(stored_hash, input_password):
+    print("Password verified successfully!")
+else:
+    print("Incorrect password.")
+```
+
+**Explanation**:
+- The `hash_password` function takes a plaintext password and hashes it using SHA-256.
+- **Storing** the hash value ensures the original password is never saved in plain text.
+- The `verify_password` function compares the stored hash with the hash of the input password.
+
+---
+
+### **3. Advanced Password Hashing Algorithms: bcrypt and PBKDF2**
+
+While SHA-256 works for many use cases, **bcrypt** and **PBKDF2** are more secure for password hashing because they add **salt** (random data) and are computationally expensive, making them more resistant to brute-force and rainbow table attacks.
+
+#### **Using bcrypt for Password Hashing**
+
+**bcrypt** is designed specifically for hashing passwords and includes a salt by default.
+
+```python
+import bcrypt
+
+def hash_password_bcrypt(password):
+    # bcrypt automatically salts and hashes the password
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode(), salt)
+    return hashed_password
+
+def verify_password_bcrypt(stored_hash, input_password):
+    # bcrypt hashpw() returns a hashed password
+    return stored_hash == bcrypt.hashpw(input_password.encode(), stored_hash)
+
+# Example Usage:
+password = input("Enter a password to hash: ")
+hashed_password = hash_password_bcrypt(password)
+print(f"Hashed password using bcrypt: {hashed_password}")
+
+# Verifying the password
+input_password = input("Enter the password to verify: ")
+if verify_password_bcrypt(hashed_password, input_password):
+    print("Password verified successfully!")
+else:
+    print("Incorrect password.")
+```
+
+**Explanation**:
+- `bcrypt.gensalt()` generates a salt automatically, making it much more secure.
+- The `hashpw` method hashes the password with the salt.
+- bcrypt hashing is slower and designed to make brute-force attacks more difficult.
+
+#### **Using PBKDF2 for Password Hashing**
+
+**PBKDF2 (Password-Based Key Derivation Function 2)** is another secure password hashing method that iteratively hashes the password multiple times to slow down brute-force attempts.
+
+```python
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+import os
+
+def hash_password_pbkdf2(password):
+    # Generate a salt
+    salt = os.urandom(16)  # 16-byte salt
+    # Derive the key using PBKDF2 with 100,000 iterations
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,  # Desired key length
+        salt=salt,
+        iterations=100000
+    )
+    hashed_password = kdf.derive(password.encode())
+    return salt + hashed_password  # Store salt + hash
+
+def verify_password_pbkdf2(stored_hash, input_password):
+    salt = stored_hash[:16]  # Extract the salt (first 16 bytes)
+    stored_hash_value = stored_hash[16:]
+    
+    # Derive the hash from the input password using the extracted salt
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000
+    )
+    try:
+        kdf.verify(input_password.encode(), stored_hash_value)
+        return True
+    except Exception:
+        return False
+
+# Example Usage:
+password = input("Enter a password to hash: ")
+stored_hash = hash_password_pbkdf2(password)
+print(f"Hashed password using PBKDF2: {stored_hash.hex()}")
+
+# Verifying the password
+input_password = input("Enter the password to verify: ")
+if verify_password_pbkdf2(stored_hash, input_password):
+    print("Password verified successfully!")
+else:
+    print("Incorrect password.")
+```
+
+**Explanation**:
+- `PBKDF2HMAC` is used to generate a hash of the password with 100,000 iterations (to slow down attacks).
+- The salt is stored along with the hash to verify future login attempts.
+
+---
+
+### **Summary of Advanced Topics**
+1. **Hashing Other Data Types**:
+   - You can hash not just strings, but also files like images or documents by reading them in chunks.
+2. **Password Hashing**:
+   - Store the **hashed** password rather than the password itself for better security.
+   - Use **salted** hashes to prevent rainbow table attacks.
+3. **Advanced Hashing Algorithms**:
+   - **bcrypt** is specifically designed for secure password hashing and includes salt.
+   - **PBKDF2** adds an iterative process to make password cracking slower and harder.
+
+---

@@ -640,37 +640,16 @@ print("Maximum element is:", find_max(arr))  # Output: 50
 
 ---
 
-### **8. Hashing – Hash Tables and Collision Handling**
 
-#### **Real-World Example: "Password Storage Using Hashing"**
-- **Explanation**: Hashing is commonly used to store and retrieve data efficiently. For example, storing passwords in a database where the password is converted into a hash to protect the actual password.
 
-#### **Python Code Examples**:
 
-1. **Basic Hash Table**
-   - *A simple hash table for storing and retrieving user data*.
-   
-```python
-class HashTable:
-    def __init__(self):
-        self.table = {}
 
-    def insert(self, key, value):
-        self.table[key] = value
+### **8. Hashing – Hash Tables and Collision Handling (Continued)**
 
-    def get(self, key):
-        return self.table.get(key, "Not found")
+3. **Hash Table with Collision Handling (Chaining) – Continued**
 
-# Example usage
-ht = HashTable()
-ht.insert("user1", "password123")
-ht.insert("user2", "mypassword")
-print("Password for user1:", ht.get("user1"))  # Output: password123
-```
+   - *Handling collisions using chaining, where each index stores a linked list of key-value pairs to resolve hash collisions.*
 
-2. **Hash Table with Collision Handling (Chaining)**
-   - *Handle collisions using chaining (linked lists at each index)*
-   
 ```python
 class HashTableChaining:
     def __init__(self):
@@ -682,6 +661,432 @@ class HashTableChaining:
 
     def insert(self, key, value):
         index = self.hash_function(key)
+        # Check if key exists and update value if it does
         for pair in self.table[index]:
             if pair[0] == key:
-                pair
+                pair[1] = value
+                return
+        # If key does not exist, append the new key-value pair
+        self.table[index].append([key, value])
+
+    def get(self, key):
+        index = self.hash_function(key)
+        # Search for the key in the corresponding list
+        for pair in self.table[index]:
+            if pair[0] == key:
+                return pair[1]
+        return "Not found"
+
+# Example usage
+ht = HashTableChaining()
+ht.insert("user1", "password123")
+ht.insert("user2", "mypassword")
+ht.insert("user3", "testpassword")
+print("Password for user1:", ht.get("user1"))  # Output: password123
+print("Password for user2:", ht.get("user2"))  # Output: mypassword
+```
+
+4. **Hash Table with Collision Handling (Open Addressing)**
+   - *Using open addressing to resolve collisions. Here, when a collision occurs, we try to find the next available slot using linear probing.*
+
+```python
+class HashTableOpenAddressing:
+    def __init__(self):
+        self.size = 10
+        self.table = [None] * self.size  # Initialize the table with None (empty slots)
+
+    def hash_function(self, key):
+        return hash(key) % self.size
+
+    def insert(self, key, value):
+        index = self.hash_function(key)
+        original_index = index
+
+        while self.table[index] is not None:  # Collision
+            if self.table[index][0] == key:  # Update value if key exists
+                self.table[index] = (key, value)
+                return
+            index = (index + 1) % self.size  # Linear probing
+            if index == original_index:  # Table is full
+                raise Exception("Hash table is full")
+        
+        self.table[index] = (key, value)
+
+    def get(self, key):
+        index = self.hash_function(key)
+        original_index = index
+
+        while self.table[index] is not None:
+            if self.table[index][0] == key:
+                return self.table[index][1]
+            index = (index + 1) % self.size  # Linear probing
+            if index == original_index:  # Not found
+                break
+        return "Not found"
+
+# Example usage
+ht = HashTableOpenAddressing()
+ht.insert("user1", "password123")
+ht.insert("user2", "mypassword")
+ht.insert("user3", "testpassword")
+print("Password for user1:", ht.get("user1"))  # Output: password123
+```
+
+5. **Dynamic Resizing of Hash Table**
+   - *Resize the hash table when it becomes too full, doubling the table size and rehashing all elements.*
+
+```python
+class ResizingHashTable:
+    def __init__(self):
+        self.size = 4
+        self.table = [None] * self.size
+        self.count = 0  # To keep track of the number of elements
+
+    def hash_function(self, key):
+        return hash(key) % self.size
+
+    def insert(self, key, value):
+        if self.count >= self.size // 2:  # Resize when the table is half full
+            self.resize()
+
+        index = self.hash_function(key)
+        while self.table[index] is not None:
+            if self.table[index][0] == key:  # Update if key exists
+                self.table[index] = (key, value)
+                return
+            index = (index + 1) % self.size
+        self.table[index] = (key, value)
+        self.count += 1
+
+    def resize(self):
+        new_size = self.size * 2
+        new_table = [None] * new_size
+
+        # Rehash all existing entries
+        for item in self.table:
+            if item:
+                key, value = item
+                index = hash(key) % new_size
+                while new_table[index] is not None:
+                    index = (index + 1) % new_size
+                new_table[index] = (key, value)
+        
+        self.table = new_table
+        self.size = new_size
+
+    def get(self, key):
+        index = self.hash_function(key)
+        while self.table[index] is not None:
+            if self.table[index][0] == key:
+                return self.table[index][1]
+            index = (index + 1) % self.size
+        return "Not found"
+
+# Example usage
+ht = ResizingHashTable()
+ht.insert("user1", "password123")
+ht.insert("user2", "mypassword")
+ht.insert("user3", "testpassword")
+ht.insert("user4", "anotherpassword")  # Triggers resizing
+print("Password for user1:", ht.get("user1"))  # Output: password123
+```
+
+---
+
+### **9. Trees – Binary Trees and Binary Search Trees (BST)**
+
+#### **Real-World Example: "File System as a Tree"**
+- **Explanation**: A tree structure is ideal for representing hierarchical data like a file system. Each folder can be a node, with subfolders as child nodes.
+
+#### **Python Code Examples**:
+
+1. **Binary Tree Implementation**
+   - *Basic binary tree structure with insertion and in-order traversal (left, root, right).*
+   
+```python
+class Node:
+    def __init__(self, key):
+        self.left = None
+        self.right = None
+        self.value = key
+
+class BinaryTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        if not self.root:
+            self.root = Node(key)
+        else:
+            self._insert(self.root, key)
+
+    def _insert(self, node, key):
+        if key < node.value:
+            if node.left is None:
+                node.left = Node(key)
+            else:
+                self._insert(node.left, key)
+        else:
+            if node.right is None:
+                node.right = Node(key)
+            else:
+                self._insert(node.right, key)
+
+    def inorder(self, node):
+        if node:
+            self.inorder(node.left)
+            print(node.value, end=" ")
+            self.inorder(node.right)
+
+# Example usage
+bt = BinaryTree()
+bt.insert(10)
+bt.insert(20)
+bt.insert(5)
+bt.insert(15)
+bt.insert(30)
+print("In-order traversal of Binary Tree:")
+bt.inorder(bt.root)  # Output: 5 10 15 20 30
+```
+
+2. **Binary Search Tree (BST) Implementation**
+   - *A binary search tree where the left child is smaller and the right child is larger than the node.*
+   
+```python
+class BSTNode:
+    def __init__(self, key):
+        self.left = None
+        self.right = None
+        self.value = key
+
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        if not self.root:
+            self.root = BSTNode(key)
+        else:
+            self._insert(self.root, key)
+
+    def _insert(self, node, key):
+        if key < node.value:
+            if node.left is None:
+                node.left = BSTNode(key)
+            else:
+                self._insert(node.left, key)
+        else:
+            if node.right is None:
+                node.right = BSTNode(key)
+            else:
+                self._insert(node.right, key)
+
+    def inorder(self, node):
+        if node:
+            self.inorder(node.left)
+            print(node.value, end=" ")
+            self.inorder(node.right)
+
+    def search(self, key):
+        return self._search(self.root, key)
+
+    def _search(self, node, key):
+        if node is None or node.value == key:
+            return node
+        if key < node.value:
+            return self._search(node.left, key)
+        return self._search(node.right, key)
+
+# Example usage
+bst = BinarySearchTree()
+bst.insert(10)
+bst.insert(20)
+bst.insert(5)
+bst.insert(15)
+bst.insert(30)
+
+print("In-order traversal of BST:")
+bst.inorder(bst.root)  # Output: 5 10 15 20 30
+search_result = bst.search(15)
+print("\nSearching for 15:", "Found" if search_result else "Not Found")
+```
+
+3. **Deleting a Node in BST**
+   - *Delete a node from the binary search tree while maintaining the BST property.*
+
+```python
+class BSTDeleteNode:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        if not self.root:
+            self.root = BSTNode(key)
+        else:
+            self._insert(self.root, key)
+
+    def _insert(self, node, key):
+        if key < node.value:
+            if node.left is None:
+                node.left = BSTNode(key)
+            else:
+                self._insert(node.left, key)
+        else:
+            if node.right is None:
+                node.right = BSTNode(key)
+            else:
+                self._insert(node.right, key)
+
+    def inorder(self, node):
+        if node:
+            self.inorder(node.left)
+            print(node.value, end=" ")
+            self.inorder(node.right)
+
+    def delete(self, root, key):
+        if root is None:
+            return root
+
+        if key < root.value:
+            root.left = self.delete(root.left, key)
+        elif key > root.value:
+            root.right = self.delete(root.right, key)
+        else:
+            if root.left is None:
+                return root.right
+            elif root.right is None:
+                return root.left
+
+            min_node = self._min_value_node(root.right)
+            root.value = min_node.value
+            root.right = self.delete(root.right, root.value)
+
+        return root
+
+    def _min_value_node(self, node):
+        current = node
+        while current.left:
+            current = current.left
+        return current
+
+# Example usage
+bst = BSTDeleteNode()
+bst.insert(10)
+bst.insert(20)
+bst.insert(5)
+bst.insert(15)
+bst.insert(30)
+
+print("In-order traversal before deletion:")
+bst.inorder(bst.root)  # Output: 5 10 15 20 30
+bst.root = bst.delete(bst.root, 20)  # Deleting node 20
+print("\nIn-order traversal after deletion of 20:")
+bst.inorder(bst.root)  # Output: 5 10 15 30
+```
+
+---
+
+### **10. Graphs – Basics, DFS, BFS**
+
+#### **Real-World Example: "Social Media Network as a Graph"**
+- **Explanation**: A graph can represent social media users (vertices) and their connections (edges). DFS and BFS can be used to explore friends and connections.
+
+#### **Python Code Examples**:
+
+1. **Graph Representation Using Adjacency List**
+   - *Representing a graph where nodes are connected by edges, using an adjacency list.*
+
+```python
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        if u not in self.graph:
+            self.graph[u] = []
+        if v not in self.graph:
+            self.graph[v] = []
+        self.graph[u].append(v)
+        self.graph[v].append(u)
+
+    def display(self):
+        for vertex in self.graph:
+            print(f"{vertex}: {self.graph[vertex]}")
+
+# Example usage
+g = Graph()
+g.add_edge(1, 2)
+g.add_edge(1, 3)
+g.add_edge(2, 4)
+g.display()  # Output: 1: [2, 3], 2: [1, 4], 3: [1], 4: [2]
+```
+
+2. **Depth-First Search (DFS)**
+   - *DFS explores nodes by going as deep as possible before backtracking.*
+
+```python
+class GraphDFS:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        if u not in self.graph:
+            self.graph[u] = []
+        self.graph[u].append(v)
+
+    def dfs(self, start):
+        visited = set()
+        self._dfs_recursive(start, visited)
+
+    def _dfs_recursive(self, node, visited):
+        if node not in visited:
+            print(node, end=" ")
+            visited.add(node)
+            for neighbor in self.graph[node]:
+                self._dfs_recursive(neighbor, visited)
+
+# Example usage
+g_dfs = GraphDFS()
+g_dfs.add_edge(1, 2)
+g_dfs.add_edge(1, 3)
+g_dfs.add_edge(2, 4)
+g_dfs.dfs(1)  # Output: 1 2 4 3
+```
+
+3. **Breadth-First Search (BFS)**
+   - *BFS explores neighbors level by level, starting from the root.*
+
+```python
+from collections import deque
+
+class GraphBFS:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        if u not in self.graph:
+            self.graph[u] = []
+        self.graph[u].append(v)
+
+    def bfs(self, start):
+        visited = set()
+        queue = deque([start])
+        visited.add(start)
+        
+        while queue:
+            node = queue.popleft()
+            print(node, end=" ")
+            for neighbor in self.graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+
+# Example usage
+g_bfs = GraphBFS()
+g_bfs.add_edge(1, 2)
+g_bfs.add_edge(1, 3)
+g_bfs.add_edge(2, 4)
+g_bfs.bfs(1)  # Output: 1 2 3 4
+```
+
+---

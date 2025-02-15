@@ -474,3 +474,202 @@ else:
    - **PBKDF2** adds an iterative process to make password cracking slower and harder.
 
 ---
+
+---
+# Advance Part
+
+
+---
+
+### **1. Experimenting with Different Hashing Algorithms and Handling Larger Files**
+
+We will experiment with different hashing algorithms such as **MD5**, **SHA-1**, and **SHA-256** and then hash a large file to observe the performance. 
+
+Here’s how you can hash larger files and experiment with different algorithms.
+
+#### **Hashing Larger Files with Multiple Algorithms**
+
+```python
+import hashlib
+import time
+
+def hash_file(file_path, hash_algorithm):
+    hash_object = hash_algorithm()
+    
+    try:
+        with open(file_path, 'rb') as file:
+            chunk = file.read(4096)  # Read in chunks
+            while chunk:
+                hash_object.update(chunk)  # Update the hash with the chunk of the file
+                chunk = file.read(4096)  # Read the next chunk
+        
+        return hash_object.hexdigest()
+    
+    except FileNotFoundError:
+        return "File not found!"
+
+def compare_hash_algorithms(file_path):
+    algorithms = [hashlib.md5, hashlib.sha1, hashlib.sha256]
+    
+    for algo in algorithms:
+        start_time = time.time()
+        file_hash = hash_file(file_path, algo)
+        end_time = time.time()
+        print(f"{algo().name.upper()} hash: {file_hash}")
+        print(f"Time taken: {end_time - start_time:.5f} seconds")
+        
+# Example Usage:
+file_path = input("Enter the path of the large file to hash: ")
+compare_hash_algorithms(file_path)
+```
+
+**Explanation**:
+- This script hashes a file in chunks (to avoid memory overload) using **MD5**, **SHA-1**, and **SHA-256**.
+- It measures the time taken for each hashing algorithm, allowing you to observe performance differences, especially for larger files.
+- **MD5** is faster but not suitable for security purposes. **SHA-256** is more secure but might take a bit longer for larger files.
+
+---
+
+### **2. Implementing Password Verification for Web or Desktop Applications**
+
+We’ll build a simple **password verification system** that can be easily integrated into both **desktop** and **web applications**.
+
+#### **Password Verification Using SHA-256 (for simplicity)**
+
+This example demonstrates password verification using SHA-256 hashing, which is common for simpler systems. You could later replace it with **bcrypt** or **PBKDF2** for stronger security.
+
+```python
+import hashlib
+import os
+
+def hash_password(password):
+    """Hash a password using SHA-256."""
+    hash_object = hashlib.sha256()
+    hash_object.update(password.encode())
+    return hash_object.hexdigest()
+
+def store_password():
+    """Simulate storing a password (e.g., in a database)."""
+    password = input("Enter a password to store: ")
+    hashed_password = hash_password(password)
+    # Here we would normally store the hashed password in a database
+    print(f"Stored hashed password: {hashed_password}")
+    return hashed_password
+
+def verify_password(stored_hash):
+    """Simulate password verification."""
+    password = input("Enter password to verify: ")
+    hashed_input_password = hash_password(password)
+    if stored_hash == hashed_input_password:
+        print("Password verified successfully!")
+    else:
+        print("Incorrect password.")
+
+# Example Usage:
+stored_hash = store_password()  # Store password securely
+verify_password(stored_hash)    # Verify password using stored hash
+```
+
+**Explanation**:
+- The `hash_password` function uses **SHA-256** to hash passwords.
+- In the `store_password` function, the password is hashed and **stored** in a database (in practice, you'd store the hash in a database).
+- The `verify_password` function hashes the input password and compares it with the stored hash to verify the password.
+
+#### **For Web Applications (Flask Example)**
+
+For a web application, you would likely use **bcrypt** or **PBKDF2** to securely hash and verify passwords. Here's an example using **Flask** for password hashing with **bcrypt**.
+
+```bash
+pip install flask bcrypt
+```
+
+```python
+from flask import Flask, request, render_template_string
+import bcrypt
+
+app = Flask(__name__)
+
+# Home route where user can enter password to store or verify
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        password = request.form["password"]
+        hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        return render_template_string("""
+            <h1>Password Hashed and Stored!</h1>
+            <p>Hashed password: {{ hashed_password }}</p>
+            <form method="POST" action="/verify">
+                <input type="password" name="password" placeholder="Enter password to verify">
+                <input type="submit" value="Verify Password">
+            </form>
+        """, hashed_password=hashed_password.decode())
+
+    return '''
+        <form method="POST">
+            <input type="password" name="password" placeholder="Enter password to store">
+            <input type="submit" value="Store Password">
+        </form>
+    '''
+
+# Route for verifying password
+@app.route("/verify", methods=["POST"])
+def verify():
+    stored_hash = request.form["stored_hash"]  # Ideally stored in a database
+    password = request.form["password"]
+
+    if bcrypt.checkpw(password.encode(), stored_hash.encode()):
+        return "<h1>Password Verified!</h1>"
+    else:
+        return "<h1>Incorrect Password</h1>"
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+**Explanation**:
+- The user stores a password on the homepage, which is hashed using **bcrypt**.
+- The user can then verify their password on the `/verify` route by comparing the input with the stored hash.
+- **Flask** is used to create the web application.
+
+---
+
+### **3. Real-World Use Cases of Hashing Algorithms**
+
+#### **a. Database Management**
+
+Hashing is used in databases to store passwords securely. **Salting** and **hashing** passwords before storing them ensures that even if the database is compromised, the actual passwords cannot be easily retrieved.
+
+In a real-world scenario, here’s how **password hashing** works:
+1. **Storing a password**: Instead of storing the plain password, a salted hash is stored.
+2. **Verifying a password**: The password is hashed again with the same salt, and the hash is compared with the stored hash.
+
+#### **b. File Integrity Checking**
+
+Hashing is widely used in **file integrity checking**. For example, software distributions often provide the **hash** of the file (e.g., SHA-256), so users can check if their downloaded file matches the hash. If the hash doesn’t match, the file may have been altered or corrupted.
+
+Here’s a typical process in software distribution:
+1. The software provider releases a file with its hash value (e.g., SHA-256).
+2. The user downloads the file and calculates the hash of the downloaded file.
+3. The user compares their calculated hash with the provided hash to ensure integrity.
+
+#### **c. Digital Signatures**
+
+Hashing algorithms are used in **digital signatures** to verify that a message or document has not been tampered with. The hash of the message is encrypted using a private key to create the digital signature.
+
+For example, the process is:
+1. The sender creates a hash of the message.
+2. The sender encrypts the hash with their private key.
+3. The receiver decrypts the hash using the sender’s public key and compares it with the hash of the received message to verify integrity.
+
+---
+
+### **Summary**
+
+1. **Hashing Larger Files**: We experimented with hashing algorithms like MD5, SHA-1, and SHA-256 to hash large files.
+2. **Password Verification**: Implemented a secure password verification system for both desktop and web applications using hashing and salt.
+3. **Real-World Applications**:
+   - **Database Management**: Using hashing and salting for storing passwords securely.
+   - **File Integrity**: Ensuring the integrity of files by comparing hashes.
+   - **Digital Signatures**: Using hashing for authentication and data verification.
+
+---

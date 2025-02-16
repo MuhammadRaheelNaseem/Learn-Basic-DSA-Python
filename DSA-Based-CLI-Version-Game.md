@@ -1,7 +1,3 @@
-Sure! Let's simplify the games a bit and base them more directly on real-world examples to make them more relatable for students. I’ll walk you through simpler CLI-based games with a focus on **real-world scenarios** that students can easily grasp.
-
----
-
 ### **1. Arrays & Lists Game: "Guess the Number"**
 #### **Real-World Scenario**: A simple game where students have to guess a number in a list, simulating how arrays can store a collection of values.
 
